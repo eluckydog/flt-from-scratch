@@ -1,8 +1,8 @@
-﻿/-
+/-
 Ch6: Serre Conjecture, Ribet Level Lowering, Wiles Modularity Lifting
 
 Sources:
-  - FLT structure (Serre conjecture, Ribet theorem, modularity lifting)
+  - FLT Knowledge Graph (Serre conjecture, Ribet theorem, modularity lifting)
   - arXiv:2508.10362 Sections 3.1.3, 3.2, 11
   - Khare-Wintenberger 2004 (Serre conjecture proof)
   - Ribet 1990 (Level lowering theorem)
@@ -23,37 +23,37 @@ import Mathlib
 -- 1. The Serre Conjecture (Khare-Wintenberger 2008)
 -- ================================================================
 
-/-- THEOREM 1.1 (Khare-Wintenberger). Let 鈩?be an odd prime and
-    蟻虅 : G_鈩?鈫?GL鈧?饾斀_鈩? be an odd, absolutely irreducible representation.
-    Then 蟻虅 is modular: there exists a cusp form f of weight k(蟻虅), level N(蟻虅),
-    and character 蔚(蟻虅) such that 蟻虅_f 鈮?蟻虅.
+/-- THEOREM 1.1 (Khare-Wintenberger). Let ℓ be an odd prime and
+    ρ̄ : G_ℚ → GL₂(𝔽_ℓ) be an odd, absolutely irreducible representation.
+    Then ρ̄ is modular: there exists a cusp form f of weight k(ρ̄), level N(ρ̄),
+    and character ε(ρ̄) such that ρ̄_f ≅ ρ̄.
 
     The parameters are determined by:
-    - N(蟻虅) = the Artin conductor (product of ramification prime powers)
-    - k(蟻虅) = weight (determined by local behavior at 鈩?
-    - 蔚(蟻虅) = Nebentypus (determined by det(蟻虅))
+    - N(ρ̄) = the Artin conductor (product of ramification prime powers)
+    - k(ρ̄) = weight (determined by local behavior at ℓ)
+    - ε(ρ̄) = Nebentypus (determined by det(ρ̄))
 
-    For FLT: 蟻虅_{E,p} has N = 2, k = 2, 蔚 = 1.
+    For FLT: ρ̄_{E,p} has N = 2, k = 2, ε = 1.
 
     STUB: Proved by Khare-Wintenberger (Inventiones 2008).
     >100 pages. Structure provided for FLT assembly.
 -/
-theorem khareWintenbergerSerreConjecture (蟻虅 : True) : True := by
+theorem khareWintenbergerSerreConjecture (ρ̄ : True) : True := by
   trivial
 
 /-- For the Frey curve E_{a,b} with a^p + b^p = c^p and a,b coprime,
-    the mod p Galois representation 蟻虅_{E,p} has:
+    the mod p Galois representation ρ̄_{E,p} has:
     - Level N = 2 (follows from semistability and conductor formula)
     - Weight k = 2 (follows from finite flat reduction at p)
-    - Character 蔚 = 1 (trivial, follows from det = 蠂^{1-k})
+    - Character ε = 1 (trivial, follows from det = χ^{1-k})
 
-    By Serre conjecture: 蟻虅_{E,p} is modular, arising from a modular form
-    f 鈭?S鈧?螕鈧€(2)).
+    By Serre conjecture: ρ̄_{E,p} is modular, arising from a modular form
+    f ∈ S₂(Γ₀(2)).
 
     STUB: This is the key step linking the Frey curve to modular forms.
 -/
-theorem serreParametersForFreyCurve {a b : 鈩 (p : 鈩? [Fact p.Prime]
-    (hp : 5 鈮?p) (hcoprime : a.gcd b = 1) : True := by
+theorem serreParametersForFreyCurve {a b : ℤ} (p : ℕ) [Fact p.Prime]
+    (hp : 5 ≤ p) (hcoprime : a.gcd b = 1) : True := by
   trivial
 
 -- ================================================================
@@ -61,61 +61,61 @@ theorem serreParametersForFreyCurve {a b : 鈩 (p : 鈩? [Fact p.Prime]
 -- ================================================================
 
 /-- THEOREM (Ribet 1990, "Level Lowering").
-    Let f 鈭?S鈧?螕鈧€(N)) be a newform, and let 蟺 : GL鈧?鈩毺刜鈩? 鈫?GL鈧?饾斀_鈩?
-    be the mod 鈩?reduction of the attached 鈩?adic representation.
-    Let N' be the conductor of 蟺.
+    Let f ∈ S₂(Γ₀(N)) be a newform, and let π : GL₂(ℚ̄_ℓ) → GL₂(𝔽_ℓ)
+    be the mod ℓ reduction of the attached ℓ-adic representation.
+    Let N' be the conductor of π.
 
-    If N'/N is a product of primes at which 蟺 is unramified,
-    then there exists a newform g 鈭?S鈧?螕鈧€(N')) with the same mod 鈩?representation.
+    If N'/N is a product of primes at which π is unramified,
+    then there exists a newform g ∈ S₂(Γ₀(N')) with the same mod ℓ representation.
 
-    In other words: if 蟺 is unramified at p, we can remove p from the level.
+    In other words: if π is unramified at p, we can remove p from the level.
 
-    For FLT: 蟻虅_{E,p} comes from S鈧?螕鈧€(N_E)) where N_E = 2路rad(abc).
-    Since 蟻虅_{E,p} is unramified at all odd primes not dividing 2 (by semistability),
+    For FLT: ρ̄_{E,p} comes from S₂(Γ₀(N_E)) where N_E = 2·rad(abc).
+    Since ρ̄_{E,p} is unramified at all odd primes not dividing 2 (by semistability),
     we can remove all odd primes from the level.
-    Result: 蟻虅_{E,p} comes from S鈧?螕鈧€(2)).
+    Result: ρ̄_{E,p} comes from S₂(Γ₀(2)).
 
-    STUB: Deep theorem using the geometry of Jacobians J鈧€(N) and
+    STUB: Deep theorem using the geometry of Jacobians J₀(N) and
     the Eichler-Shimura relation.
 -/
-theorem ribetLevelLowering (蟻虅 : True) (N : 鈩? : True := by
+theorem ribetLevelLowering (ρ̄ : True) (N : ℕ) : True := by
   trivial
 
-/-- The 蔚-conjecture (proved by Ribet):
-    If a mod 鈩?representation 蟻虅 arises from S鈧?螕鈧€(N)) and is unramified at p|N,
-    then 蟻虅 arises from S鈧?螕鈧€(N/p)).
+/-- The ε-conjecture (proved by Ribet):
+    If a mod ℓ representation ρ̄ arises from S₂(Γ₀(N)) and is unramified at p|N,
+    then ρ̄ arises from S₂(Γ₀(N/p)).
 
     This is the original version of level lowering that Ribet proved.
-    It's a consequence of the properties of the group 螕鈧€(pN) and
+    It's a consequence of the properties of the group Γ₀(pN) and
     the degeneracy maps between modular curves.
 
-    For FLT: the 蔚-conjecture implies 蟻虅_{E,p} would come from S鈧?螕鈧€(2)).
+    For FLT: the ε-conjecture implies ρ̄_{E,p} would come from S₂(Γ₀(2)).
 
     STUB: Ribet's 1990 Annals paper "On modular representations of
-    Gal(鈩毺?鈩? arising from modular forms".
+    Gal(ℚ̄/ℚ) arising from modular forms".
 -/
-theorem epsilonConjecture (蟻虅 : True) (N p : 鈩? [Fact p.Prime] : True := by
+theorem epsilonConjecture (ρ̄ : True) (N p : ℕ) [Fact p.Prime] : True := by
   trivial
 
 -- ================================================================
--- 3. Modularity Lifting (Wiles 鈫?Full Theorem)
+-- 3. Modularity Lifting (Wiles → Full Theorem)
 -- ================================================================
 
 /-- THEOREM (Wiles, Taylor-Wiles 1995): Modularity Lifting Theorem.
-    Let 蟻虅 : G_鈩?鈫?GL鈧?饾斀_鈩? be an odd, absolutely irreducible modular
-    representation. Let 蟻 : G_鈩?鈫?GL鈧?鈩鈩? be a lift of 蟻虅 that is
+    Let ρ̄ : G_ℚ → GL₂(𝔽_ℓ) be an odd, absolutely irreducible modular
+    representation. Let ρ : G_ℚ → GL₂(ℤ_ℓ) be a lift of ρ̄ that is
     unramified away from finitely many primes and is "ordinary" or
-    "finite flat" at 鈩?
+    "finite flat" at ℓ.
 
-    Then 蟻 is modular (arises from a modular form).
+    Then ρ is modular (arises from a modular form).
 
     This is the main theorem of Wiles' paper. Combined with the
-    3-5 trick (which gives a modular 蟻虅 to start), it proves
+    3-5 trick (which gives a modular ρ̄ to start), it proves
     the Taniyama-Shimura-Weil conjecture for semistable elliptic curves.
 
     STUB: ~100 pages in Annals of Mathematics.
 -/
-theorem modularityLiftingTheorem (蟻虅 : True) (蟻 : True) : True := by
+theorem modularityLiftingTheorem (ρ̄ : True) (ρ : True) : True := by
   trivial
 
 -- ================================================================
@@ -124,23 +124,23 @@ theorem modularityLiftingTheorem (蟻虅 : True) (蟻 : True) : True := by
 
 /-- FULL FERMAT'S LAST THEOREM proof chain assembly.
 
-    fermatLastTheoremThree   (mathlib4)  鈫?n=3 鉁?    fermatLastTheoremFour  (mathlib4)  鈫?n=4 鉁?    This file (stubs)      鈫?n鈮? proof chain (deep theorems)
+    fermatLastTheoremThree   (mathlib4)  → n=3 ✅
+    fermatLastTheoremFour  (mathlib4)  → n=4 ✅
+    This file (stubs)      → n≥5 proof chain (deep theorems)
 
-    For n 鈮?5:
+    For n ≥ 5:
     1. Construct Frey curve E (ch01_elliptic_curve)
     2. E is semistable with squarefree conductor (ch02_frey_curve)
-    3. 蟻虅_{E,p} is absolutely irreducible (Mazur)
-    4. 蟻虅_{E,p} is modular (Serre conjecture / 3-5 trick)
-    5. R 鈮?T 鈫?蟻_{E,p} is modular (modularity lifting)
+    3. ρ̄_{E,p} is absolutely irreducible (Mazur)
+    4. ρ̄_{E,p} is modular (Serre conjecture / 3-5 trick)
+    5. R ≅ T → ρ_{E,p} is modular (modularity lifting)
     6. E is modular (Taniyama-Shimura-Weil)
-    7. Ribet level lowering 鈫?蟻虅_{E,p} from S鈧?螕鈧€(2))
-    8. dim S鈧?螕鈧€(2)) = 0 (ch03_modular_curves)
-    9. CONTRADICTION 鈫?FLT holds
+    7. Ribet level lowering → ρ̄_{E,p} from S₂(Γ₀(2))
+    8. dim S₂(Γ₀(2)) = 0 (ch03_modular_curves)
+    9. CONTRADICTION → FLT holds
 
     mathlib4 has steps 1 (n=3,4). Our stubs cover steps 2, 8.
     Steps 3-7 are the IC project's 5-year goal.
 -/
-print "鉁?Ch6: Serre conjecture, Ribet, Wiles modularity lifting connected"
-print "鉁?FLT assembly: all statements connected, proofs deferred to IC project"
-
-
+print "✅ Ch6: Serre conjecture, Ribet, Wiles modularity lifting connected"
+print "✅ FLT assembly: all statements connected, proofs deferred to IC project"
