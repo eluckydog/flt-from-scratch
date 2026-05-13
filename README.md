@@ -2,6 +2,7 @@
 
 > A knowledge-graph-driven walkthrough of Fermat's Last Theorem —
 > from the Frey curve through modularity, Serre, Ribet, to the contradiction.
+> Inspired by arXiv:2508.10362. Built on mathlib4 with reference to the Imperial College FLT formalization project.
 
 **This is a study project.** Not peer-reviewed. Not authoritative. Just a structured attempt to trace the proof chain of FLT from first principles.
 
