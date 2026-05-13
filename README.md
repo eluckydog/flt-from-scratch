@@ -26,20 +26,22 @@ run_all()
 #   Galois reps (structure)     ██████████  4/4
 ```
 
-**Lean 4 references** — theorems and conjectures mapped to mathlib4 concepts:
+**Lean 4 references** — proof sketches and concept mappings (see status note below):
 
-| File | Content |
-|------|---------|
-| `lean/ch01_elliptic_curve.lean` | Elliptic curve definitions |
-| `lean/ch02_frey_curve.lean` | Frey curve construction |
-| `lean/ch03_modular_curves.lean` | Modular forms, Hecke operators |
-| `lean/ch03_S2_zero_proof.lean` | dim S₂(Γ₀(2)) = 0 — the critical fact |
-| `lean/ch04_galois.lean` | Galois representations |
-| `lean/ch05_deformation.lean` | Deformation rings, R = T |
-| `lean/ch06_serre_ribet_wiles.lean` | Serre, Ribet, Wiles assembly |
-| `lean/flt_base_cases.lean` | n=3, n=4 wrappers |
-| `lean/flt_n3_lambda_descent.lean` | Self-contained Eisenstein descent |
-| `lean/generated/*.lean` | 487-concept index mapped to mathlib4 |
+| File | Content | Status |
+|------|---------|--------|
+| `lean/ch01_elliptic_curve.lean` | Elliptic curve definitions | ✅ `norm_num`-computable + stub deep theorems |
+| `lean/ch02_frey_curve.lean` | Frey curve construction | ✅ ring/norm_num verifiable + stub theorems |
+| `lean/ch03_modular_curves.lean` | Modular forms, Hecke operators | ✅ framework only |
+| `lean/ch03_S2_zero_proof.lean` | dim S₂(Γ₀(2)) = 0 — critical fact | ⚠️ `native_decide`-verifiable + stubs |
+| `lean/ch04_galois.lean` | Galois representations | ⚠️ structural stubs |
+| `lean/ch05_deformation.lean` | Deformation rings, R = T | 🔴 deep stub (R=T is ~100 pages) |
+| `lean/ch06_serre_ribet_wiles.lean` | Serre, Ribet, Wiles assembly | 🔴 deep stub (Fields Medal level) |
+| `lean/flt_base_cases.lean` | n=3, n=4 wrappers | ✅ imports mathlib4 FLT theorems |
+| `lean/flt_n3_lambda_descent.lean` | Self-contained Eisenstein descent | ⚠️ key lemmas stubbed |
+| `lean/generated/*.lean` | 487-concept index → mathlib4 | 📋 mapping reference only |
+
+> **⚠️ Lean status note:** These Lean files are **not a complete, compilable formalization.** They are proof sketches, theorem declarations, and concept mappings intended as reference material. Deep theorems (Serre, Ribet, Wiles R=T) are declared as `theorem ... := by sorry` — their complete proofs are the subject of the Imperial College FLT formalization project. Only the Python verification layer (`flt_verification/`) produces executable, pass/fail results.
 
 **Knowledge graph** — structured concept map of the entire FLT proof chain:
 
