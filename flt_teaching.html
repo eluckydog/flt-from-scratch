@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLT Proof — Teaching Documentation</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family:'Segoe UI',-apple-system,sans-serif;
+    background:#0d1117; color:#c9d1d9;
+    line-height:1.6; max-width:1000px;
+    margin:0 auto; padding:2rem;
+}
+h1 { font-size:2.2rem; font-weight:700; color:#58a6ff; margin-bottom:0.5rem; }
+.subtitle { color:#8b949e; font-size:1.1rem; margin-bottom:2rem; }
+.intro { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:1.5rem; margin-bottom:2rem; }
+.intro ol { margin-left:1.2rem; }
+.stats { display:flex; gap:1rem; flex-wrap:wrap; margin:1rem 0; }
+.stat-card { background:#161b22; border:1px solid #30363d; border-radius:6px; padding:0.8rem 1.2rem; flex:1; min-width:120px; }
+.stat-card .num { font-size:1.8rem; font-weight:700; color:#58a6ff; }
+.stat-card .label { color:#8b949e; font-size:0.85rem; }
+.chapter-card { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:1.5rem; margin-bottom:1.5rem; transition:border-color 0.2s; }
+.chapter-card:hover { border-color:#58a6ff; }
+.chapter-title { font-size:1.3rem; color:#f0f6fc; margin-bottom:0.8rem; }
+.chapter-num { color:#58a6ff; font-weight:600; margin-right:0.5rem; }
+.badge-row { display:inline-block; margin-left:0.5rem; }
+.domain-badge { display:inline-block; font-size:0.7rem; padding:2px 8px; border-radius:12px; margin:2px; font-weight:500; }
+.domain-abstractalgebra { background:#1a3a1a; color:#7ee787; }
+.domain-ellipticcurves { background:#1a2a3a; color:#79c0ff; }
+.domain-modularforms { background:#3a1a2a; color:#ffa657; }
+.domain-galoisrepr { background:#2a1a3a; color:#d2a8ff; }
+.domain-fltproof { background:#3a2a1a; color:#e3b341; }
+.domain-complexanalysis { background:#1a2a2a; color:#79ffe1; }
+.domain-topology { background:#2a2a2a; color:#8b949e; }
+.chapter-desc { color:#8b949e; margin-bottom:0.8rem; }
+.chapter-meta { font-size:0.9rem; margin-bottom:0.5rem; }
+.theorems ul, .verification ul { margin-left:1.2rem; margin-top:0.3rem; }
+.verification li { margin:0.2rem 0; }
+.v-pass { color:#7ee787; font-weight:600; }
+.v-stub { color:#e3b341; font-weight:600; }
+.phase-card { background:#161b22; border:1px solid #30363d; border-radius:6px; padding:1rem; margin-bottom:0.8rem; }
+.phase-card h3 { color:#f0f6fc; font-size:1rem; }
+.phase-card details summary { cursor:pointer; color:#8b949e; }
+.phase-card details summary:hover { color:#58a6ff; }
+.node-list { display:grid; grid-template-columns:repeat(3,1fr); gap:0.2rem; margin-top:0.5rem; }
+.node-list li { list-style:none; font-size:0.78rem; color:#8b949e; }
+.warning { background:#2d1b0e; border:1px solid #e3b341; border-radius:8px; padding:1rem; margin-bottom:1.5rem; }
+.warning strong { color:#e3b341; }
+hr { border:none; border-top:1px solid #30363d; margin:2rem 0; }
+</style>
+</head>
+<body>
+
+<h1>Fermat's Last Theorem</h1>
+<p class="subtitle">Proof Structure &middot; Knowledge Graph &middot; Python Verification</p>
+
+<div class="warning">
+<strong>NOTE:</strong> Deep theorems (Serre conjecture, Ribet level lowering, Wiles R=T) are marked as stubs.
+Their proofs are at the Fields Medal level and are the subject of the Imperial College FLT formalization
+project (EPSRC 2024-2029, Kevin Buzzard).
+</div>
+
+<div class="intro">
+<h3 style="color:#58a6ff; margin-bottom:0.5rem;">Table of Contents</h3>
+<ol>
+<li><a href="#ch1" style="color:#79c0ff;">Ch 1: Introduction &amp; Historical Background</a></li><li><a href="#ch2" style="color:#79c0ff;">Ch 2: The Frey Curve Construction</a></li><li><a href="#ch3" style="color:#79c0ff;">Ch 3: Elliptic Curves (Background)</a></li><li><a href="#ch4" style="color:#79c0ff;">Ch 4: Modular Forms</a></li><li><a href="#ch5" style="color:#79c0ff;">Ch 5: Hecke Operators and the Hecke Algebra</a></li><li><a href="#ch6" style="color:#79c0ff;">Ch 6: Galois Representations</a></li><li><a href="#ch7" style="color:#79c0ff;">Ch 7: Deformation Theory and R = T</a></li><li><a href="#ch8" style="color:#79c0ff;">Ch 8: Serre&#x27;s Conjecture</a></li><li><a href="#ch9" style="color:#79c0ff;">Ch 9: Ribet&#x27;s Level Lowering</a></li><li><a href="#ch10" style="color:#79c0ff;">Ch 10: Modularity Lifting</a></li><li><a href="#ch11" style="color:#79c0ff;">Ch 11: The FLT Contradiction</a></li><li><a href="#chA" style="color:#79c0ff;">Ch A: Appendix: n = 4 (Infinite Descent)</a></li><li><a href="#chB" style="color:#79c0ff;">Ch B: Appendix: n = 3 (Eisenstein Descent)</a></li>
+</ol>
+</div>
+
+<div class="stats">
+    <div class="stat-card"><div class="num">487</div><div class="label">KG Nodes</div></div>
+    <div class="stat-card"><div class="num">340</div><div class="label">KG Edges</div></div>
+    <div class="stat-card"><div class="num">7</div><div class="label">Domains</div></div>
+    <div class="stat-card"><div class="num">13</div><div class="label">Chapters</div></div>
+</div>
+
+
+<div class="chapter-card" id="ch1">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 1</span>
+        Introduction &amp; Historical Background
+        <span class="badge-row"><span class="domain-badge domain-fltproof">FLT Proof</span></span>
+    </h2>
+    <p class="chapter-desc">Fermat&#x27;s 1637 marginal note, the 358-year journey, and the structure of Wiles&#x27; proof.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch06_serre_ribet_wiles.lean</code></p>
+    <div class="theorems"><strong>Theorems:</strong><ul><li><code>theorem_3_1</code></li>
+<li><code>theorem_3_2</code></li>
+</ul></div>
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> FLT n=3 brute-force: no solutions (1 &lt;= x &lt;= y &lt;= 100)</li>
+<li><span class="v-pass">PASS</span> FLT n=4 brute-force: no solutions (1 &lt;= x &lt;= y &lt;= 50)</li>
+<li><span class="v-pass">PASS</span> FLT n=5 brute-force: no solutions (1 &lt;= x &lt;= y &lt;= 30)</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch2">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 2</span>
+        The Frey Curve Construction
+        <span class="badge-row"><span class="domain-badge domain-ellipticcurves">Elliptic Curves</span><span class="domain-badge domain-fltproof">FLT Proof</span></span>
+    </h2>
+    <p class="chapter-desc">Assuming a^p + b^p = c^p, construct E: y^2 = x(x - a^p)(x + b^p). Key properties: non-singular, semistable, conductor N_E = 2.rad(abc).</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch02_frey_curve.lean</code></p>
+    <div class="theorems"><strong>Theorems:</strong><ul><li><code>theorem_3_1</code></li>
+<li><code>theorem_3_2</code></li>
+</ul></div>
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> Frey(1,2,3): discriminant = 82944 != 0</li>
+<li><span class="v-pass">PASS</span> Frey(3,5,3): discriminant != 0</li>
+<li><span class="v-pass">PASS</span> Frey(1,2,5): discriminant != 0</li>
+<li><span class="v-pass">PASS</span> N_E squarefree: all Tate exponents in {0,1}</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch3">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 3</span>
+        Elliptic Curves (Background)
+        <span class="badge-row"><span class="domain-badge domain-ellipticcurves">Elliptic Curves</span></span>
+    </h2>
+    <p class="chapter-desc">Weierstrass equations, discriminant Delta, j-invariant, group law, Mordell&#x27;s theorem, torsion subgroups.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch01_elliptic_curve.lean</code></p>
+    <div class="theorems"><strong>Theorems:</strong><ul><li><code>theorem_7_1</code></li>
+<li><code>theorem_7_2</code></li>
+<li><code>theorem_7_3</code></li>
+</ul></div>
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> Group law 10/10 tests (identity, inverse, commutativity, associativity)</li>
+<li><span class="v-pass">PASS</span> Point counting: 11 primes, all satisfy Hasse bound</li>
+<li><span class="v-pass">PASS</span> E[2] is isomorphic to Z/2Z x Z/2Z (Klein four-group)</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch4">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 4</span>
+        Modular Forms
+        <span class="badge-row"><span class="domain-badge domain-modularforms">Modular Forms</span><span class="domain-badge domain-complexanalysis">Complex Analysis</span></span>
+    </h2>
+    <p class="chapter-desc">Holomorphic functions on the upper half-plane, Eisenstein series E_4, E_6, cusp forms, q-expansions, Hecke operators T_p.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch03_modular_curves.lean</code></p>
+    <div class="theorems"><strong>Theorems:</strong><ul><li><code>theorem_8_5</code></li>
+</ul></div>
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> E_6(i) = 0 (by symmetry)</li>
+<li><span class="v-pass">PASS</span> M_*(SL_2(Z)) = C[E_4, E_6] dimension check</li>
+<li><span class="v-pass">PASS</span> S_2(Gamma_0(2)) = 0 (genus formula: g_0(2) = 0) -- CRITICAL</li>
+<li><span class="v-pass">PASS</span> T_2 E_4 = 9E_4 (Hecke eigenvalue 1+2^3=9)</li>
+<li><span class="v-pass">PASS</span> T_2 Delta = tau(2)Delta = -24Delta (Ramanujan tau)</li>
+<li><span class="v-pass">PASS</span> Hecke multiplicativity: T_2 T_3 = T_6</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch5">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 5</span>
+        Hecke Operators and the Hecke Algebra
+        <span class="badge-row"><span class="domain-badge domain-modularforms">Modular Forms</span></span>
+    </h2>
+    <p class="chapter-desc">The Hecke algebra T generated by T_p acting on S_2(Gamma_0(N)). The Eichler-Shimura relation connects T_p to Frobenius on J_0(N).</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch03_modular_curves.lean</code></p>
+    
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> T_p action on q-expansion implemented</li>
+<li><span class="v-pass">PASS</span> Eigenvalue property verified on Delta</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch6">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 6</span>
+        Galois Representations
+        <span class="badge-row"><span class="domain-badge domain-galoisrepr">Galois Repr</span><span class="domain-badge domain-abstractalgebra">Abstract Algebra</span></span>
+    </h2>
+    <p class="chapter-desc">The absolute Galois group G_Q, l-adic representations, the mod p representation rho_{E,p} attached to an elliptic curve.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch04_galois.lean</code></p>
+    <div class="theorems"><strong>Theorems:</strong><ul><li><code>theorem_8_1</code></li>
+<li><code>theorem_8_2</code></li>
+</ul></div>
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> E[2] Galois action: Q(E[2]) = Q, trivial representation</li>
+<li><span class="v-pass">PASS</span> rho_{E,2} image = {identity} subset GL_2(F_2)</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch7">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 7</span>
+        Deformation Theory and R = T
+        <span class="badge-row"><span class="domain-badge domain-galoisrepr">Galois Repr</span></span>
+    </h2>
+    <p class="chapter-desc">The universal deformation ring R of rho-bar, the Hecke algebra T acting on S_2(Gamma_0(N)), Taylor-Wiles patching to prove R = T.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch05_deformation.lean</code></p>
+    
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-stub">STUB</span> Deep theorem: not verifiable by elementary methods</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch8">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 8</span>
+        Serre&#x27;s Conjecture
+        <span class="badge-row"><span class="domain-badge domain-galoisrepr">Galois Repr</span><span class="domain-badge domain-modularforms">Modular Forms</span></span>
+    </h2>
+    <p class="chapter-desc">Every odd, absolutely irreducible mod l representation of G_Q is modular (Khare-Wintenberger 2008).</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch06_serre_ribet_wiles.lean</code></p>
+    
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-stub">STUB</span> Deep theorem: proof &gt;100 pages, stub only</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch9">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 9</span>
+        Ribet&#x27;s Level Lowering
+        <span class="badge-row"><span class="domain-badge domain-fltproof">FLT Proof</span></span>
+    </h2>
+    <p class="chapter-desc">If rho-bar arises from S_2(Gamma_0(N)) and is unramified at p|N, then rho-bar arises from S_2(Gamma_0(N/p)).</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch06_serre_ribet_wiles.lean</code></p>
+    
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-stub">STUB</span> Deep theorem: Ribet 1990, stub only</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch10">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 10</span>
+        Modularity Lifting
+        <span class="badge-row"><span class="domain-badge domain-fltproof">FLT Proof</span></span>
+    </h2>
+    <p class="chapter-desc">If rho-bar is modular, then any &#x27;nice&#x27; lift rho is also modular. Wiles &amp; Taylor-Wiles 1995.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch06_serre_ribet_wiles.lean</code></p>
+    
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-stub">STUB</span> Deep theorem: ~100 pages, stub only</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="ch11">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch 11</span>
+        The FLT Contradiction
+        <span class="badge-row"><span class="domain-badge domain-fltproof">FLT Proof</span></span>
+    </h2>
+    <p class="chapter-desc">Assemble the chain: Frey curve -&gt; modularity -&gt; Ribet level lowering -&gt; S_2(Gamma_0(2)) = 0 -&gt; contradiction.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>ch06_serre_ribet_wiles.lean</code></p>
+    
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> dim S_2(Gamma_0(2)) = 0 (elementary genus formula)</li>
+<li><span class="v-pass">PASS</span> Full proof chain numerically consistent</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="chA">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch A</span>
+        Appendix: n = 4 (Infinite Descent)
+        <span class="badge-row"><span class="domain-badge domain-abstractalgebra">Abstract Algebra</span></span>
+    </h2>
+    <p class="chapter-desc">Fermat&#x27;s own proof: x^4 + y^4 = z^4 has no non-trivial integer solutions by infinite descent.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>flt_base_cases.lean</code></p>
+    
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> Brute force no solutions for x,y &lt;= 50</li>
+</ul></div>
+</div>
+<div class="chapter-card" id="chB">
+    <h2 class="chapter-title">
+        <span class="chapter-num">Ch B</span>
+        Appendix: n = 3 (Eisenstein Descent)
+        <span class="badge-row"><span class="domain-badge domain-abstractalgebra">Abstract Algebra</span><span class="domain-badge domain-complexanalysis">Complex Analysis</span></span>
+    </h2>
+    <p class="chapter-desc">Euler&#x27;s proof using Z[omega] where omega = e^{2pi i/3}. Eisenstein integers, lambda = 1 - omega, lambda-adic descent.</p>
+    <p class="chapter-meta"><strong>Lean:</strong> <code>flt_base_cases.lean</code></p>
+    <div class="theorems"><strong>Theorems:</strong><ul><li><code>lemma_12_7</code></li>
+<li><code>lemma_12_9</code></li>
+</ul></div>
+    <div class="verification"><strong>Verification:</strong><ul><li><span class="v-pass">PASS</span> Z[omega] arithmetic: omega^3 = 1, omega^2+omega+1=0</li>
+<li><span class="v-pass">PASS</span> lambda = 1-omega, N(lambda)=3, prime in Z[omega]</li>
+<li><span class="v-pass">PASS</span> Lemma 12.6: alpha = 0, +/-1 (mod lambda) for all Z[omega] elements</li>
+<li><span class="v-pass">PASS</span> Lemma 12.7: lambda does not divide alpha -&gt; alpha^3 = +/-1 (mod lambda^4): 294/294</li>
+<li><span class="v-pass">PASS</span> 3 = (-omega^2)lambda^2 (associate)</li>
+<li><span class="v-pass">PASS</span> Factorization: x^3 + y^3 = (x+y)(x+omega y)(x+omega^2 y)</li>
+<li><span class="v-pass">PASS</span> Lemma 12.9: lambda divides one of x,y,z in x^3+y^3+z^3=0</li>
+</ul></div>
+</div>
+
+<hr>
+<h2 style="color:#58a6ff; margin-bottom:1rem;">Learning Path</h2>
+<p style="color:#8b949e; margin-bottom:1rem;">5 phases, from abstract algebra to the FLT contradiction:</p>
+
+<div class="phase-card">
+    <h3>Phase 1: Abstract Algebra: group, ring, field, module, Galois group</h3>
+    <details>
+        <summary>116 concepts</summary>
+        <ul class="node-list">
+            <li>ring</li><li>group</li><li>abelian</li><li>field</li><li>module</li><li>vector space</li><li>homomorphism</li><li>quotient</li><li>finite field</li><li>galois group</li><li>cyclotomic</li><li>isomorphism</li><li>kernel</li><li>extension</li><li>topology</li><li>lemma_6_1</li><li>proposition_6_1</li><li>theorem_8_1</li><li>theorem_8_2</li><li>theorem_10_1</li><li>proposition_10_1</li><li>theorem_10_2</li><li>thm_lemma_6_1</li><li>thm_proposition_6_1</li><li>thm_lemma_7_3</li><li>thm_proposition_7_2</li><li>thm_proposition_7_3</li><li>thm_proposition_7_4</li><li>thm_lemma_7_4</li><li>thm_proposition_7_5</li><li>thm_corollary_7_1</li><li>thm_theorem_7_3</li><li>thm_proposition_7_6</li><li>thm_theorem_8_2</li><li>thm_proposition_9_1</li><li>thm_theorem_9_2</li><li>thm_lemma_9_5</li><li>thm_lemma_9_6</li><li>thm_theorem_9_8</li><li>thm_lemma_9_9</li><li>thm_lemma_9_11</li><li>thm_lemma_9_12</li><li>thm_corollary_9_1</li><li>thm_theorem_10_1</li><li>thm_proposition_10_1</li><li>thm_theorem_10_2</li><li>thm_theorem_11_1</li><li>thm_proposition_11_1</li><li>thm_proposition_11_2</li><li>thm_theorem_11_2</li><li>thm_lemma_11_2</li><li>thm_lemma_11_4</li><li>thm_lemma_11_7</li><li>thm_proposition_11_6</li><li>thm_proposition_11_7</li><li>thm_lemma_11_9</li><li>thm_lemma_11_10</li><li>thm_theorem_11_11</li><li>thm_lemma_11_12</li><li>thm_theorem_11_13</li><li>thm_theorem_11_4</li><li>thm_theorem_13_1</li><li>thm_lemma_14_1</li><li>thm_proposition_14_1</li><li>thm_theorem_14_3</li><li>thm_proposition_14_2</li><li>rational_prime</li><li>algebraic_norm</li><li>unity_algebraic</li><li>associate</li><li>cyclotomic_field</li><li>algebraic_integer</li><li>coprime</li><li>infinite_descent</li><li>eisenstein_integer</li><li>root_of_unity</li><li>determinant</li><li>projective_geometry</li><li>geometry</li><li>linear_algebra</li><li>polynomial</li><li>prime</li><li>integer</li><li>number_theory</li><li>adele</li><li>witt_vector</li><li>2×2_matrices_mat₂r</li><li>trace_of_matrix</li><li>general_linear_group_gl₂r</li><li>special_linear_group_sl₂r</li><li>eigenvalues_and_eigenvectors</li><li>characteristic_polynomial</li><li>group_action_on_sets</li><li>orbit</li><li>stabiliser_subgroup</li><li>quotient_set_x_∼</li><li>quotient_space_v_w</li><li>topological_space</li><li>discrete_topology</li><li>subspace_topology</li><li>basis_for_a_topology</li><li>product_topology</li><li>continuous_function_topological</li><li>infinite_product_topology</li><li>topological_group</li><li>field_extension_k_f</li><li>autk_f</li><li>galois_extension</li><li>normal_extension</li><li>separable_extension</li><li>fundamental_theorem_of_galois_theory</li><li>algebraic_closure_q̄</li><li>finite_field_f_{p^k}</li><li>frobenius_automorphism_finite_fields</li><li>group_representation</li><li>irreducible_representation</li>
+        </ul>
+    </details>
+</div>
+<div class="phase-card">
+    <h3>Phase 2: Elliptic Curves: Weierstrass, Mordell theorem, Frey curve</h3>
+    <details>
+        <summary>67 concepts</summary>
+        <ul class="node-list">
+            <li>frey</li><li>elliptic curve</li><li>conductor</li><li>semistable</li><li>uniformisation</li><li>weierstrass</li><li>j-invariant</li><li>singular</li><li>mordell</li><li>discriminant</li><li>frey curve</li><li>reduction</li><li>bad reduction</li><li>good reduction</li><li>point at infinity</li><li>torsion</li><li>rational point</li><li>lattice</li><li>proposition_7_1</li><li>theorem_7_1</li><li>theorem_7_2</li><li>lemma_7_3</li><li>proposition_7_2</li><li>proposition_7_3</li><li>proposition_7_4</li><li>lemma_7_4</li><li>proposition_7_5</li><li>corollary_7_1</li><li>theorem_7_3</li><li>proposition_7_6</li><li>theorem_9_4</li><li>theorem_9_2</li><li>theorem_14_2</li><li>theorem_13_1</li><li>proposition_13_1</li><li>lemma_3_1</li><li>thm_proposition_3_1</li><li>thm_proposition_3_2</li><li>thm_theorem_3_2</li><li>thm_proposition_3_3</li><li>thm_theorem_7_2</li><li>good_reduction</li><li>bad_reduction</li><li>multiplicative_reduction</li><li>additive_reduction</li><li>node_singularity</li><li>cusp_singularity</li><li>cayley_bacharach</li><li>point_at_infinity</li><li>singular_point</li><li>pp_group_scheme</li><li>torsion_points</li><li>point_at_infinity_o</li><li>elliptic_curve_group_law</li><li>p-division_points_e[p]</li><li>ℓ-adic_tate_module</li><li>ℓ-adic_integers_z_ℓ</li><li>inverse_limit</li><li>inverse_system</li><li>lattice_l</li><li>uniformisation_theorem</li><li>e[n]_≅_z_nz⊕z_nz</li><li>two-dimensional_f_l_vector_space</li><li>tate_ℓe_≅_z_ℓ_⊕_z_ℓ</li><li>semistable_elliptic_curve</li><li>conductor_n_e_general</li><li>cayley-bacharach_theorem</li>
+        </ul>
+    </details>
+</div>
+<div class="phase-card">
+    <h3>Phase 3: Modular Forms: holomorphic, Hecke operators, q-expansion</h3>
+    <details>
+        <summary>145 concepts</summary>
+        <ul class="node-list">
+            <li>modular form</li><li>holomorphic</li><li>upper half</li><li>fourier</li><li>level</li><li>eisenstein</li><li>cusp form</li><li>weight</li><li>cusp</li><li>hecke</li><li>meromorphic</li><li>analytic</li><li>cauchy</li><li>laurent</li><li>mobius</li><li>contour</li><li>congruence subgroup</li><li>q-expansion</li><li>eigenform</li><li>newform</li><li>residue</li><li>proposition_3_3</li><li>corollary_8_1</li><li>theorem_8_3</li><li>theorem_8_4</li><li>theorem_8_5</li><li>theorem_8_6</li><li>theorem_8_7</li><li>theorem_8_8</li><li>theorem_8_9</li><li>theorem_8_10</li><li>theorem_8_11</li><li>proposition_9_1</li><li>lemma_9_1</li><li>lemma_9_2</li><li>proposition_9_2</li><li>theorem_9_1</li><li>lemma_9_5</li><li>lemma_9_6</li><li>lemma_9_7</li><li>theorem_9_8</li><li>lemma_9_9</li><li>proposition_9_4</li><li>lemma_9_10</li><li>lemma_9_11</li><li>lemma_9_12</li><li>lemma_9_13</li><li>lemma_9_14</li><li>corollary_9_1</li><li>lemma_14_1</li><li>proposition_14_1</li><li>theorem_14_3</li><li>proposition_14_2</li><li>proposition_14_3</li><li>theorem_14_4</li><li>corollary_14_1</li><li>theorem_14_1</li><li>lemma_14_5</li><li>lemma_14_6</li><li>thm_proposition_9_4</li><li>special_linear_group</li><li>projective_space</li><li>riemann_sphere</li><li>fundamental_domain</li><li>Gamma_0_N</li><li>residue_theorem</li><li>contour_integral</li><li>complex_number</li><li>modularity_lifting_theorem</li><li>p_adic_langlands</li><li>automorphic_form</li><li>potential_modularity</li><li>hecke_algebra</li><li>serre_weight</li><li>ramananujan_delta</li><li>residual_modularity</li><li>hecke_operator_Tp</li><li>hecke_operator_Tn</li><li>hecke_algebra_T</li><li>hecke_eigenform</li><li>modular_group</li><li>congruence_subgroup</li><li>modular_form_def</li><li>fourier_expansion</li><li>slash_operator</li><li>petersson_inner_product</li><li>atkin_lehner_newform</li><li>oldforms_newforms</li><li>hecke_recurrence</li><li>holomorphic_function</li><li>power_series</li><li>analytic_function</li><li>complex_integral</li><li>cauchys_theorem</li><li>liouvilles_theorem</li><li>laurent_series</li><li>pole_complex_analysis</li><li>meromorphic_function</li><li>argument_principle</li><li>möbius_transformation</li><li>riemann_sphere_ĉ</li><li>projective_space_p¹c</li><li>riemanns_theorem_on_removable_singularities</li><li>bolzano-weierstrass_theorem</li><li>uniform_convergence</li><li>absolute_convergence</li><li>upper_half_plane_h</li><li>weakly_modular_form_of_weight_k</li><li>holomorphic_at_infinity</li><li>q-expansion_fourier</li><li>modular_form_level_1_definition</li><li>sl₂z_action_on_h</li><li>sl₂z_generators</li><li>eisenstein_series_g_k</li><li>graded_c-algebra_c[g₄,g₆]</li><li>weierstrass_℘_function</li><li>℘_differential_equation</li><li>uniformisation:_c_l_→_e_c</li><li>principal_congruence_subgroup_γn</li><li>γ₀n_congruence_subgroup</li><li>modular_form_of_level_n</li><li>cusp_of_congruence_subgroup</li><li>cusp_form</li><li>hecke_operator_t_n</li><li>taniyama-shimura-weil_conjecture</li><li>no_cusp_forms_weight_2_level_2_γ₀2</li><li>orbit_representatives_sl₂z\m_n</li><li>jα,z_=_cz+d_factor_of_automorphy</li><li>number_field</li><li>ring_of_integers_o_k</li><li>prime_ideal_p_in_o_k</li><li>pythagorean_triples</li><li>proof_of_flt_n=4_infinite_descent</li><li>eisenstein_integers_kρ</li><li>proof_of_flt_n=3_landau_euler</li><li>norm_nα_algebraic</li><li>associate_algebraic</li><li>regular_prime_kummer</li><li>radical_radn</li><li>fundamental_domain_modular</li><li>dimension_formula_s₂γ₀n</li><li>inner_product_space</li><li>hilbert_space</li><li>square-integrable_function_l²</li><li>fourier_basis_{e^{2πinx}}</li>
+        </ul>
+    </details>
+</div>
+<div class="phase-card">
+    <h3>Phase 4: Galois Repr: ℓ-adic, deformation theory, R=T</h3>
+    <details>
+        <summary>71 concepts</summary>
+        <ul class="node-list">
+            <li>galois representation</li><li>absolute galois</li><li>unramified</li><li>dirichlet</li><li>l-adic</li><li>tate module</li><li>functional equation</li><li>theorem_11_1</li><li>proposition_11_1</li><li>proposition_11_2</li><li>proposition_11_3</li><li>theorem_11_2</li><li>lemma_11_2</li><li>lemma_11_3</li><li>lemma_11_4</li><li>lemma_11_5</li><li>lemma_11_6</li><li>lemma_11_7</li><li>lemma_5_3</li><li>proposition_11_4</li><li>proposition_11_5</li><li>proposition_11_6</li><li>theorem_11_3</li><li>proposition_11_7</li><li>lemma_11_8</li><li>lemma_11_9</li><li>lemma_11_10</li><li>corollary_11_1</li><li>theorem_11_11</li><li>lemma_11_12</li><li>theorem_11_13</li><li>theorem_11_4</li><li>deformation_ring</li><li>minimal_deformation_ring</li><li>taylor_wiles_method</li><li>R_equals_T</li><li>kisin_RT_machinery</li><li>crystalline_representation</li><li>semistable_representation</li><li>minimal_p_adic_lift</li><li>compatible_system</li><li>kill_ramification</li><li>frobenius_element</li><li>hodge_tate_weight</li><li>p_adic_lift</li><li>degruyter_compatible_system</li><li>hecke_l_function</li><li>absolute_galois_group_g_q</li><li>krull_topology</li><li>galois_representation_ρ:_g_q→gl_nr</li><li>mod_ℓ_galois_representation</li><li>ℓ-adic_galois_representation</li><li>cyclotomic_character_χ</li><li>p-adic_cyclotomic_character</li><li>odd_galois_representation</li><li>serres_modularity_conjecture</li><li>galois_action_on_torsion_points</li><li>ρ_e,ℓ:_elliptic_curve_galois_representation</li><li>modular_galois_representation</li><li>conductor_n_serre</li><li>weight_k_serre</li><li>nebentypus_ε</li><li>unramified_at_prime_p</li><li>trace_of_frobenius_trfrob_p,ρ</li><li>frobenius_element_in_g_q</li><li>decomposition_group_d_p</li><li>inertia_group_i_p</li><li>ribets_level_lowering</li><li>langlands-tunnell_theorem</li><li>3-5_trick_wiles</li><li>frey_curve_galois_representation</li>
+        </ul>
+    </details>
+</div>
+<div class="phase-card">
+    <h3>Phase 5: FLT Proof: Ribet, Wiles, contradiction</h3>
+    <details>
+        <summary>88 concepts</summary>
+        <ul class="node-list">
+            <li>serre</li><li>modularity</li><li>ribet</li><li>wiles</li><li>taylor</li><li>taniyama</li><li>shimura</li><li>contradiction</li><li>epsilon conjecture</li><li>theorem_3_1</li><li>proposition_3_1</li><li>proposition_3_2</li><li>corollary_1_2</li><li>theorem_3_2</li><li>theorem_12_1</li><li>theorem_12_2</li><li>lemma_12_2</li><li>lemma_12_3</li><li>lemma_12_4</li><li>lemma_12_5</li><li>lemma_12_6</li><li>lemma_12_7</li><li>lemma_12_8</li><li>lemma_12_9</li><li>lemma_12_10</li><li>lemma_12_11</li><li>lemma_8_7</li><li>theorem_12_12</li><li>thm_theorem_3_1</li><li>thm_proposition_7_1</li><li>thm_theorem_7_1</li><li>thm_theorem_8_1</li><li>thm_corollary_8_1</li><li>thm_theorem_8_3</li><li>thm_theorem_8_4</li><li>thm_theorem_8_5</li><li>thm_theorem_8_6</li><li>thm_theorem_8_7</li><li>thm_theorem_8_8</li><li>thm_theorem_8_9</li><li>thm_theorem_8_10</li><li>thm_theorem_8_11</li><li>thm_lemma_9_1</li><li>thm_lemma_9_2</li><li>thm_proposition_9_2</li><li>thm_theorem_9_1</li><li>thm_lemma_9_3</li><li>thm_proposition_9_3</li><li>thm_theorem_9_4</li><li>thm_lemma_9_7</li><li>thm_lemma_9_10</li><li>thm_lemma_9_13</li><li>thm_lemma_9_14</li><li>thm_proposition_11_3</li><li>thm_lemma_11_3</li><li>thm_lemma_11_5</li><li>thm_lemma_11_6</li><li>thm_proposition_11_4</li><li>thm_proposition_11_5</li><li>thm_theorem_11_3</li><li>thm_lemma_11_8</li><li>thm_corollary_11_1</li><li>thm_theorem_12_1</li><li>thm_theorem_12_2</li><li>thm_lemma_12_2</li><li>thm_lemma_12_3</li><li>thm_lemma_12_4</li><li>thm_lemma_12_5</li><li>thm_lemma_12_6</li><li>thm_lemma_12_7</li><li>thm_lemma_12_8</li><li>thm_lemma_12_9</li><li>thm_lemma_12_10</li><li>thm_lemma_12_11</li><li>thm_theorem_12_12</li><li>thm_proposition_13_1</li><li>thm_theorem_14_2</li><li>thm_proposition_14_3</li><li>thm_theorem_14_4</li><li>thm_corollary_14_1</li><li>thm_theorem_14_1</li><li>thm_lemma_14_5</li><li>thm_lemma_14_6</li><li>pythagorean_triple</li><li>abc_conjecture</li><li>induction_on_primes</li><li>serre_conjecture</li><li>level_one_serre</li>
+        </ul>
+    </details>
+</div>
+
+<hr>
+<h2 style="color:#58a6ff; margin-bottom:1rem;">Lean 4 Source Files</h2>
+<ul style="color:#79c0ff;">
+<li><strong>ch01_elliptic_curve.lean</strong> - Elliptic curve definitions</li>
+<li><strong>ch02_frey_curve.lean</strong> - Frey curve construction</li>
+<li><strong>ch03_modular_curves.lean</strong> - Modular forms, Hecke, S_2(Gamma_0(2))=0</li>
+<li><strong>ch04_galois.lean</strong> - Galois representations</li>
+<li><strong>ch05_deformation.lean</strong> - Deformation rings, R=T</li>
+<li><strong>ch06_serre_ribet_wiles.lean</strong> - Serre, Ribet, Wiles, FLT assembly</li>
+<li><strong>flt_base_cases.lean</strong> - n=3, n=4 wrappers</li>
+</ul>
+
+</body>
+</html>
